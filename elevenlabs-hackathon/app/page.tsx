@@ -1,10 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import VoiceUpload from "@/components-ym/VoiceUpload";
-import TextGeneration from "@/components-ym/TextGeneration";
-import { BookAudio, Mic } from "lucide-react";
+import VoiceUpload from "@/components-tab/VoiceUpload";
+import TextGeneration from "@/components-tab/TextGeneration";
 
 const Index = () => {
   const [voiceId, setVoiceId] = useState<string>("");
@@ -18,7 +16,7 @@ const Index = () => {
         </div>
 
         <div className="relative">
-          {/* book spine and shadow */}
+          {/* book shadow */}
           <div className="absolute left-1/2 top-0 bottom-0 w-8 bg-gradient-to-r 
             from-gray-900/20 to-transparent transform -translate-x-1/2"></div>
           {/* main content */}
