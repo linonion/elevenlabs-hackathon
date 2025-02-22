@@ -145,7 +145,7 @@ body {
 .background-gradient {
   background: radial-gradient(
     at left top,
-    rgba(107, 114, 128, 0.5),
+    rgba(108, 199, 18, 0.5),
     50px,
     rgba(14, 14, 14, 0.5) 100%
   );
