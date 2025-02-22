@@ -1,13 +1,6 @@
 import type { Metadata } from 'next';
 
 import { getApiKey } from '@/app/actions';
-import { AppSidebar } from '@/components/app-sidebar';
-import { Byline } from '@/components/by-line';
-import { KeyProvider } from '@/components/key-provider';
-import { ThemeProvider } from '@/components/theme-provider';
-import { Card } from '@/components/ui/card';
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { Toaster } from '@/components/ui/sonner';
 
 import './globals.css';
 
@@ -33,35 +26,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const apiKey = apiKeyResult.ok ? apiKeyResult.value : null;
 
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          forcedTheme="dark"
-          disableTransitionOnChange
-        >
-          <KeyProvider apiKey={apiKey}>
-            <SidebarProvider>
-              <AppSidebar />
-              <SidebarInset className="background-gradient">
-                <header className="relative flex h-[60px] shrink-0 items-center justify-center">
-                  <SidebarTrigger className="absolute left-3" />
-                </header>
-                <div className="p-4">
-                  <div className="mx-auto max-w-4xl space-y-3 px-2 pt-20 lg:px-8 lg:py-8">
-                    <Byline />
-                    <Card className="border-gradient rounded-lg p-px shadow-lg">
-                      <div className="bg-card rounded-lg">{children}</div>
-                    </Card>
-                  </div>
-                </div>
-              </SidebarInset>
-            </SidebarProvider>
-          </KeyProvider>
-          <Toaster />
-        </ThemeProvider>
+        <div className="min-h-screen bg-gradient-to-b from-accent to-background py-8 px-4">
+          <div className="container max-w-4xl mx-auto">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );

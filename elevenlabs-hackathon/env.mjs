@@ -3,10 +3,12 @@ import { z } from 'zod';
 
 export const env = createEnv({
   server: {
-    ELEVENLABS_API_KEY: z.string().min(1, 'ElevenLabs API key is required'),
+    ELEVENLABS_API_KEY: z.string().optional(),
+    // ELEVENLABS_API_KEY: z.string().min(1, 'ElevenLabs API key is required'),
   },
   client: {},
   runtimeEnv: {
-    ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
+    // ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
+    ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY || 'mock-api-key'
   },
 });
