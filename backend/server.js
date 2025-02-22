@@ -1,7 +1,9 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
-const voiceCloneRoutes = require('./routes/voiceCloneRoutes');
-const ttsRoutes = require('./routes/ttsRoutes');
+const voiceCloneRoutes = require('./routes/voiceCloneRoutes.js');
+const ttsRoutes = require('./routes/ttsRoutes.js');
 
 const app = express();
 app.use(cors());
