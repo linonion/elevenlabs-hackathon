@@ -52,4 +52,34 @@ exports.generateClonedVoice = async (req, res) => {
   }
 };
 
+// edit cloned voice settings
+exports.editClonedVoice = async (req, res) => {
+  try {
+    const voiceId = req.params.voiceId;
+    const { name, description, removeBackgroundNoise, stability, similarityBoost } = req.body;
 
+    if (!voiceId) {
+      return res.status(400).json({ success: false, message: 'No voiceId provided' });
+    }
+
+    const settings = {
+      name: name || 'Default Voice Name',
+      description: description || 'Updated Voice Description',
+      remove_background_noise: removeBackgroundNoise || false,
+      stability: stability || 0.5,
+      similarity_boost: similarityBoost || 0.5
+    };
+
+    const responseData = await elevenLabsService.editVoiceSettings(voiceId, settings);
+
+    return res.json({
+      success: true,
+      message: 'Voice settings updated successfully',
+      data: responseData
+    });
+
+  } catch (err) {
+    console.error('Error in editClonedVoice:', err.response?.data || err.message);
+    return res.status(500).json({ success: false, message: 'Failed to update voice settings' });
+  }
+};
