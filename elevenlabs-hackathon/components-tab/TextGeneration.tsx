@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Play, Download, Loader2 } from "lucide-react";
@@ -8,7 +8,6 @@ import { useToast } from "@/hooks/use-toast";
 interface TextGenerationProps {
   voiceId: string;
 }
-
 const TextGeneration = ({ voiceId }: TextGenerationProps) => {
   const [text, setText] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -16,38 +15,42 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
   const { toast } = useToast();
 
   const handleGenerate = async () => {
-    if (!voiceId) {
+    // console.log("generate button clicked");
+  
+    if (!voiceId || !text.trim()) {
       toast({
-        title: "No Voice Selected",
-        description: "Please upload and create a voice first.",
+        title: "Missing Data",
+        description: "Please upload a voice and enter text.",
         variant: "destructive",
       });
       return;
     }
-
-    if (!text.trim()) {
-      toast({
-        title: "No Text",
-        description: "Please enter some text to generate speech.",
-        variant: "destructive",
-      });
-      return;
-    }
-
+  
     setIsGenerating(true);
-
+  
     try {
-      // TODO: Implement actual text-to-speech with ElevenLabs API
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
-      // Simulate successful audio generation
-      setAudioUrl("");
-      
+      const response = await fetch('http://localhost:3001/api/tts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ voiceId, text }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to generate audio');
+      }
+  
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      setAudioUrl(url);
+  
       toast({
         title: "Success!",
         description: "Audio has been generated successfully.",
       });
     } catch (error) {
+      console.error("Error:", error);
       toast({
         title: "Error",
         description: "Failed to generate audio. Please try again.",
@@ -57,6 +60,7 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
       setIsGenerating(false);
     }
   };
+  
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -75,10 +79,14 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
 
       <div className="flex justify-center gap-4">
         <Button
-          onClick={handleGenerate}
+          onClick={() => {
+            // console.log("button clicked");
+            handleGenerate();
+          }}
           disabled={isGenerating || !text.trim()}
           className= {`w-40 btn-generate`}
         >
+          
           {isGenerating ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />

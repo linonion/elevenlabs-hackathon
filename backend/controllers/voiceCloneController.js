@@ -3,6 +3,7 @@ const elevenLabsService = require('../services/elevenLabsService');
 
 exports.cloneVoice = async (req, res) => {
   try {
+    console.log('Request File:', req.file); //DEBUG
     if (!req.file) {
       return res.status(400).json({ success: false, message: 'No audio file uploaded.' });
     }
@@ -15,6 +16,8 @@ exports.cloneVoice = async (req, res) => {
     const responseData = await elevenLabsService.createVoice(audioBuffer, originalName);
 
     const { voiceId } = responseData;
+    //delete after processing
+    fs.unlinkSync(filePath);
 
     return res.json({
       success: true,

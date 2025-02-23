@@ -20,32 +20,45 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
 
     setIsUploading(true);
     setProgress(0);
+    
+    const formData = new FormData();
+    formData.append("audio", file);
 
-    // Simulated upload progress
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 95) {
-          clearInterval(interval);
-          return prev;
-        }
-        return prev + 5;
-      });
-    }, 500);
+    // // Simulated upload progress
+    // const interval = setInterval(() => {
+    //   setProgress((prev) => {
+    //     if (prev >= 95) {
+    //       clearInterval(interval);
+    //       return prev;
+    //     }
+    //     return prev + 5;
+    //   });
+    // }, 500);
 
     try {
-      // TODO: add voice cloning API
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      // add voice cloning API
+      const response = await fetch('http://localhost:3001/api/voice-clone', {
+        method: 'POST',
+        body: formData
+      })
       
-      // simulate voice creation
-      const mockVoiceId = "mock-voice-id-" + Date.now();
-      onVoiceCreated(mockVoiceId);
-      
+      const data = await response.json();
+
+      if(!response.ok) {
+        throw new Error(data.message || 'Failed to clone voice');
+      }
+
+      const {voiceId} = data;
+      // console.log('Voice ID:', voiceId);
+      onVoiceCreated(voiceId);
+
       setProgress(100);
       toast({
         title: "Success!",
         description: "Voice has been successfully cloned.",
         duration: 5000,
       });
+      
     } catch (error) {
       toast({
         title: "Error",
@@ -54,7 +67,6 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
       });
     } finally {
       setIsUploading(false);
-      clearInterval(interval);
     }
   };
 

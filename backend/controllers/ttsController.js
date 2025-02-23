@@ -2,6 +2,7 @@ const elevenLabsService = require('../services/elevenLabsService');
 
 exports.getTTS = async (req, res) => {
   try {
+    // console.log('Request Body:', req.body); //DEBUG
     const { voiceId, text } = req.body;
     if (!voiceId || !text) {
       return res.status(400).json({
