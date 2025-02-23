@@ -30,7 +30,6 @@ This is an **eleven labs hackathon** project that uses [Eleven Labs API](https:/
    - A reading area where text can be typed or loaded, then voiced out.
    - An easy hands-on voice modification and download function.
 
----
 
 ## Tech Stack
 
@@ -46,7 +45,6 @@ This is an **eleven labs hackathon** project that uses [Eleven Labs API](https:/
   - Uses Voice Cloning endpoint (`/v1/voices/add`)
   - Uses TTS endpoint (`/v1/text-to-speech/{voiceId}`)
 
----
 
 ## Installation & Setup on your end
 
@@ -80,7 +78,6 @@ npm run dev
 
 Usually listening on http://localhost:3000.
 
----
 
 ## Possible Improvements
 
@@ -92,19 +89,14 @@ Usually listening on http://localhost:3000.
 
 If you have any issues, ideas or feedback, please feel free to create a new issue or contact the authors!
 
----
 
 ## Author
 - [Yun Ma](https://github.com/yunma-code)
 - [Jiayue Zhang](https://github.com/jiayuezhang84)
 - [linonino](https://github.com/linonion)
 
----
-
 ## License
 This project is licensed under the [MIT License](./LICENSE).
-
----
 
 ## Acknowlegements
 - Eleven Labs for the voice cloning & TTS API.
