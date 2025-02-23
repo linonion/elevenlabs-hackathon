@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Play, Download, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import ModifyClonedVoice from "./ModifyClonedAudio";
 
 interface TextGenerationProps {
   voiceId: string;
@@ -12,6 +13,7 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
   const [text, setText] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string>("");
+  const [ShowModifyComponent, setShowModifyComponent] = useState(false);
   const { toast } = useToast();
 
   const handleGenerate = async () => {
@@ -100,12 +102,20 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
           )}
         </Button>
 
-        {audioUrl && !isGenerating && (
+        {/* {audioUrl && !isGenerating && (
           <Button variant="outline" className={`w-40 btn-generate`}>
             <Download className="w-4 h-4 mr-2" />
             Download
           </Button>
-        )}
+        )} */}
+
+        {/* add modify button for editing cloned voice tab */}
+        <Button 
+          onClick={() => setShowModifyComponent((prev) => !prev)}
+          variant="outline"
+        >
+          {ShowModifyComponent ? "Close Modify" : "Modify Cloned Voice"}
+        </Button>
       </div>
 
       {audioUrl && !isGenerating && (
@@ -116,6 +126,8 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
           </audio>
         </div>
       )}
+
+      {ShowModifyComponent && <ModifyClonedVoice voiceId={voiceId} />}
     </div>
   );
 };
