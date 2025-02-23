@@ -116,13 +116,13 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
           </Button>
         )} */}
 
-        {/* add modify button for editing cloned voice tab */}
+        {/* add modify button for editing cloned voice tab
         <Button 
           onClick={() => setShowModifyComponent((prev) => !prev)}
           variant="outline"
         >
           {ShowModifyComponent ? "Close Modify" : "Modify Cloned Voice"}
-        </Button>
+        </Button> */}
       </div>
 
       {audioUrl && !isGenerating && (
@@ -134,9 +134,9 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
         </div>
       )}
 
-      {ShowModifyComponent && 
+      {/* {ShowModifyComponent && 
       // <ModifyClonedVoice voiceId={voiceId} pitchParam={handlePitch}/>}
-      <ModifyClonedVoice voiceId={voiceId}/>}
+      <ModifyClonedVoice voiceId={voiceId}/>} */}
     </div>
   );
 };

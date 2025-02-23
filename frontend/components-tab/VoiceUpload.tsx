@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Upload, Loader2, Play } from "lucide-react";
@@ -17,6 +17,17 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
   const [voiceId, setVoiceId] = useState<string | null>(null);
+  const [stability, setStability] = useState(0.5); // test param
+  const [similarityBoost, setSimilarityBoost] = useState(0.5); // test param
+
+  useEffect(() => {
+    return () => {
+      if (clonedAudioUrl) {
+        URL.revokeObjectURL(clonedAudioUrl);
+      }
+    };
+  }, [clonedAudioUrl]);
+
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -65,6 +76,7 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
     }
   };
 
+  // handle cloned voice output
   const handleGenerateClonedVoice = async () => {
     if (!voiceId) {
       toast({
@@ -105,6 +117,52 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
     }
   };
 
+  // handle voice edit
+  const handleEditVoice = async() => {
+    if(!voiceId) {
+      toast({
+        title: "Missing Data",
+        description: "Please generate a voice first",
+        variant: "destructive",
+      });
+      return;
+    }
+    const newSettings = {
+      name: "updated voice",
+      description: "Adjust stability and similarity boost",
+      removeBackgroundNoise: false,
+      stability: stability,
+      similarityBoost: similarityBoost
+    };
+    try {
+      const response = await fetch(`http://localhost:3001/api/voice-clone/edit/${voiceId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newSettings)
+      });
+      const data = await response.json();
+
+      if(!response.ok) {
+        throw new Error(data.message || 'failed to edit cloned voice');
+      }
+
+      toast({
+        title: "Success",
+        description: "Cloned voice has been generated successfully",
+      });
+      await handleGenerateClonedVoice(); //generate voice after editing automatically
+    } catch (error) {
+      console.error("Error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate cloned voice. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center p-8 border-2 border-dashed border-primary/20 rounded-lg 
@@ -140,8 +198,9 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
         </div>
       )}
       
+      {/* generate button */}
       {voiceId && (
-         <div className="flex items-center space-x-2 mt-4">
+         <div className="text-center mt-4">
         <Button
           onClick={handleGenerateClonedVoice}
           disabled={isGenerating}
@@ -158,14 +217,77 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
             </>
           )}
         </Button>
-        <h3 className="text-sm text-gray-600">Click to hear your cloned voice!</h3>
+          <p className="text-sm text-gray-600">Click to hear your cloned voice!</p>
         </div>
       )}
 
+        {/*         
+        {voiceId && (
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700">Stability</label>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={stability}
+              onChange={(e) => setStability(parseFloat(e.target.value))}
+              className="w-full"
+            />
+            <span className="text-sm text-gray-600">Current Stability: {stability}</span>
+            
+            <Button
+              onClick={handleEditVoice}
+              className="w-28 btn-edit mt-4"
+            >
+              Edit Voice
+            </Button>
+          </div>
+        )} */}
+
+        {/* sliders */}
+        {voiceId && (
+        <div className="mt-4">
+          <label className="block text-sm font-medium text-gray-700">Stability</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={stability}
+            onChange={(e) => setStability(parseFloat(e.target.value))}
+            className="w-full"
+          />
+          <span className="text-sm text-gray-600">Current Stability: {stability}</span>
+
+          <label className="block text-sm font-medium text-gray-700 mt-4">Similarity Boost</label>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={similarityBoost}
+            onChange={(e) => setSimilarityBoost(parseFloat(e.target.value))}
+            className="w-full"
+          />
+          <span className="text-sm text-gray-600">Current Similarity Boost: {similarityBoost}</span>
+          
+          <Button
+            onClick={handleEditVoice}
+            className="flex w-28 btn-edit mt-4"
+          >
+            Edit Voice
+          </Button>
+        </div>
+    )}
+      
+      {/* cloned voice playback */}
       {clonedAudioUrl && (
         <div className="mt-6 p-4 bg-accent rounded-lg animate-fade-in">
           <p className="text-sm text-gray-600">Cloned voice playback</p>
-          <audio controls className="w-full">
+          <audio key={clonedAudioUrl}
+            controls
+            className="w-full">
             <source src={clonedAudioUrl} type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
