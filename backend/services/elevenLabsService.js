@@ -1,7 +1,9 @@
 const axios = require('axios');
 const FormData = require('form-data');
+require('dotenv').config({ path: './backend/.env'});
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
+console.log('ELEVEN_LABS_API_KEY:', ELEVENLABS_API_KEY);
 
 exports.createVoice = async (audioBuffer, filename) => {
   try {
@@ -10,12 +12,12 @@ exports.createVoice = async (audioBuffer, filename) => {
     form.append('files', audioBuffer, { filename });
 
     form.append('remove_background_noise', 'false');
-
     const response = await axios.post(
       'https://api.elevenlabs.io/v1/voices/add',
       form,
       {
         headers: {
+
           'xi-api-key': ELEVENLABS_API_KEY,
           ...form.getHeaders()
         }
