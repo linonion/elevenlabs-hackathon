@@ -8,12 +8,14 @@ import ModifyClonedVoice from "./ModifyClonedAudio";
 
 interface TextGenerationProps {
   voiceId: string;
+  pitchParam: (newPitch: number) => void;
 }
 const TextGeneration = ({ voiceId }: TextGenerationProps) => {
   const [text, setText] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string>("");
   const [ShowModifyComponent, setShowModifyComponent] = useState(false);
+  const [pitch, setPitch] = useState(1);
   const { toast } = useToast();
 
   const handleGenerate = async () => {
@@ -61,6 +63,11 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
     } finally {
       setIsGenerating(false);
     }
+  };
+
+  const handlePitch = (newPitch: number) => {
+    setPitch(newPitch);
+    console.log("newpitch: ", newPitch);
   };
   
 
@@ -127,7 +134,9 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
         </div>
       )}
 
-      {ShowModifyComponent && <ModifyClonedVoice voiceId={voiceId} />}
+      {ShowModifyComponent && 
+      // <ModifyClonedVoice voiceId={voiceId} pitchParam={handlePitch}/>}
+      <ModifyClonedVoice voiceId={voiceId}/>}
     </div>
   );
 };
