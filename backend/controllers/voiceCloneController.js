@@ -29,3 +29,27 @@ exports.cloneVoice = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Voice cloning failed.' });
   }
 };
+
+// add generate cloned voice endpoint 
+exports.generateClonedVoice = async (req, res) => {
+  try {
+    const voiceId = req.params.voiceId;
+    if (!voiceId) {
+      return res.status(400).json({ success: false, message: 'No voiceId provided' });
+    }
+
+    const audioBuffer = await elevenLabsService.textToSpeech(voiceId, 'Hello, this is the cloned voice!');
+
+    res.set({
+      'Content-Type': 'audio/mpeg',
+      'Content-Disposition': 'attachment; filename="cloned-voice.mp3"',
+    });
+
+    res.send(audioBuffer);
+  } catch (error) {
+    console.error('Error in generateClonedVoice:', error);
+    res.status(500).json({ error: 'Failed to generate cloned voice' });
+  }
+};
+
+
