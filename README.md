@@ -52,7 +52,6 @@ This is an **eleven labs hackathon** project that uses [Eleven Labs API](https:/
 
 2. **Install the dependencies**
 ```bash
-# If using separate front/back:
     cd backend
     npm install
     cd ../front
