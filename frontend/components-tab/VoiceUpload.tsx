@@ -12,6 +12,7 @@ interface VoiceUploadProps {
 const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [uploadedAudio, setUploadedAudio] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,6 +21,7 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
 
     setIsUploading(true);
     setProgress(0);
+    setUploadedAudio(null);
     
     const formData = new FormData();
     formData.append("audio", file);
@@ -51,6 +53,9 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
       const {voiceId} = data;
       // console.log('Voice ID:', voiceId);
       onVoiceCreated(voiceId);
+      
+      const audioURL = URL.createObjectURL(file);
+      setUploadedAudio(audioURL);
 
       setProgress(100);
       toast({
@@ -109,6 +114,15 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
           <p className="text-sm text-center text-gray-600">
             {progress < 100 ? "Processing voice..." : "Voice created successfully!"}
           </p>
+        </div>
+      )}
+
+      {uploadedAudio && (
+        <div className="mt-6 p-4 bg-accent rounded-lg animate-fade-in">
+          <audio controls className="w-full">
+            <source src={uploadedAudio} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
         </div>
       )}
     </div>
