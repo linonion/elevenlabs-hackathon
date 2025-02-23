@@ -58,3 +58,25 @@ exports.textToSpeech = async (voiceId, text) => {
       throw new Error('Failed to generate TTS from Eleven Labs');
     }
   };
+
+  // method for api call for voice settings
+  exports.editVoiceSettings = async (voiceId, settings) => {
+    try {
+      const response = await axios.post(
+        `https://api.elevenlabs.io/v1/voices/${voiceId}/settings/edit`,
+        settings,
+        {
+          headers: {
+            'xi-api-key': ELEVENLABS_API_KEY,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      return response.data;
+    } catch (err) {
+      console.error('editVoiceSettings error:', err.response?.data || err.message);
+      throw new Error('Failed to update voice settings');
+    }
+  };
+  
