@@ -67,11 +67,11 @@ you might need to upgrade elevenlabs subscription, please check [Eleven Labs API
 
 ```bash
 cd backend
-node server.js
+npm start
 ```
 
 ```bash
-cd front
+cd frontend
 npm run dev
 ```
 
