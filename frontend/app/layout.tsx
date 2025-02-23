@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { getApiKey } from '@/app/actions';
+// import { getApiKey } from '@/app/actions';
 
 import './globals.css';
 
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const apiKeyResult = await getApiKey();
-  const apiKey = apiKeyResult.ok ? apiKeyResult.value : null;
+  // const apiKeyResult = await getApiKey();
+  // const apiKey = apiKeyResult.ok ? apiKeyResult.value : null;
 
   return (
     <html lang="en" suppressHydrationWarning>

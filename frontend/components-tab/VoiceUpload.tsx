@@ -95,7 +95,7 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
           disabled={isUploading}
         />
         <Button asChild variant="outline" disabled={isUploading}>
-          <label htmlFor="voice-upload" className="cursor-pointer">
+          <label htmlFor="voice-upload" className="cursor-pointer text-white">
             {isUploading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />

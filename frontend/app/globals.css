@@ -13,7 +13,7 @@
 }
 
 :root {
-  --background: rgb(145, 189, 235);
+  --background: rgb(0, 0, 66);
   --foreground: rgb(10, 10, 10);
   --card: hsl(0 0% 100%);
   --card-foreground: hsl(0 0% 3.9%);

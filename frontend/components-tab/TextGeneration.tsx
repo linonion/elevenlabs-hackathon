@@ -113,6 +113,7 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
         <Button 
           onClick={() => setShowModifyComponent((prev) => !prev)}
           variant="outline"
+          className="text-white"
         >
           {ShowModifyComponent ? "Close Modify" : "Modify Cloned Voice"}
         </Button>
