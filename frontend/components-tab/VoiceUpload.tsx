@@ -204,7 +204,8 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
         <Button
           onClick={handleGenerateClonedVoice}
           disabled={isGenerating}
-          className={`w-28 btn-generate mt-4`}
+          variant="outline"
+          className="cursor-pointer text-white"
         >
           {isGenerating ? (
             <>
@@ -248,7 +249,7 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
         {/* sliders */}
         {voiceId && (
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">Stability</label>
+          <label className="block text-sm font-medium text-gray-700" >Stability</label>
           <input
             type="range"
             min="0"
@@ -256,7 +257,7 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
             step="0.01"
             value={stability}
             onChange={(e) => setStability(parseFloat(e.target.value))}
-            className="w-full"
+            className="w-full custom-slider"
           />
           <span className="text-sm text-gray-600">Current Stability: {stability}</span>
 
@@ -268,13 +269,14 @@ const VoiceUpload = ({ onVoiceCreated }: VoiceUploadProps) => {
             step="0.01"
             value={similarityBoost}
             onChange={(e) => setSimilarityBoost(parseFloat(e.target.value))}
-            className="w-full"
+            className="w-full custom-slider"
           />
           <span className="text-sm text-gray-600">Current Similarity Boost: {similarityBoost}</span>
           
           <Button
             onClick={handleEditVoice}
-            className="flex w-28 btn-edit mt-4"
+            className="flex cursor-pointer text-white"
+            variant="outline"
           >
             Edit Voice
           </Button>

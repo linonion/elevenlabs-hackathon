@@ -8,7 +8,7 @@ import ModifyClonedVoice from "./ModifyClonedAudio";
 
 interface TextGenerationProps {
   voiceId: string;
-  pitchParam: (newPitch: number) => void;
+  //pitchParam: (newPitch: number) => void;
 }
 const TextGeneration = ({ voiceId }: TextGenerationProps) => {
   const [text, setText] = useState("");
@@ -87,13 +87,14 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
       </div>
 
       <div className="flex justify-center gap-4">
-        <Button
+        <Button 
+          variant="outline"
           onClick={() => {
             // console.log("button clicked");
             handleGenerate();
           }}
           disabled={isGenerating || !text.trim()}
-          className= {`w-40 btn-generate`}
+          className="cursor-pointer text-white"
         >
           
           {isGenerating ? (
@@ -103,7 +104,7 @@ const TextGeneration = ({ voiceId }: TextGenerationProps) => {
             </>
           ) : (
             <>
-              <Play className={`w-40 btn-generate`} />
+              <Play  />
               Generate
             </>
           )}
